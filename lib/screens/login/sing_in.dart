@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shallwe_app/config/color_palette.dart';
 import '../../size.dart';
+import '../../custom_widget/custom_textformfield.dart';
+import '../../custom_widget/custom_button.dart';
+import './sign_up.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -14,19 +18,34 @@ class _SignInScreenState extends State<SignInScreen> {
   late String _userEmail;
   late String _UserPassword;
 
-  void _tryValidation() {
+  void _tryValidation() async {
     final isValid = _formkey.currentState!.validate();
     print(isValid);
     if (isValid) {
       _formkey.currentState!.save();
+      //firebase 로그인
+      await signin();
+      print('signin end');
     }
+  }
+
+  Future<void> signin() async {
+    await Duration(seconds: 3);
+    print('signin');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: _SignInBody(),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('ShellWe?', style: TextStyle(color: Colors.white)),
+        ),
+        body: SingleChildScrollView(child: _SignInBody()),
+      ),
     );
   }
 
@@ -35,8 +54,8 @@ class _SignInScreenState extends State<SignInScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 164 * getScaleHeight(context)),
-        Container(
-          margin: EdgeInsets.only(
+        Padding(
+          padding: EdgeInsets.only(
               left: (MediaQuery.of(context).size.width -
                       654 * getScaleWidth(context)) /
                   2),
@@ -68,121 +87,63 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    TextFormField(
-                      key: ValueKey('email'),
-                      keyboardType: TextInputType.emailAddress,
-                      autofocus: false,
-                      validator: (value) {
+                    CustomTextField(
+                      ValueKey('email'),
+                      TextInputType.emailAddress,
+                      (value) {
                         return (value!.isEmpty || !value.contains('@'))
                             ? '이메일 주소를 입력해주세요'
                             : null;
                       },
-                      onSaved: (value) {
+                      (value) {
                         _userEmail = value!;
                       },
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.alternate_email_rounded),
-                        hintText: '이메일을 입력해주세요.',
-                        hintStyle: TextStyle(
-                          color: const Color(0xff999999),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "NotoSansCJKkr",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 24.0 * getScaleHeight(context),
-                        ),
-                        fillColor: Palette.TextFieldColor,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Palette.borderColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Palette.borderColor),
-                        ),
-                      ),
+                      '',
+                      '이메일을 입력해주세요.',
+                      context,
                     ),
-                    SizedBox(height: 20 * getScaleHeight(context)),
-                    TextFormField(
-                      key: ValueKey('pw'),
-                      obscureText: true,
-                      autofocus: false,
-                      validator: (value) {
+                    CustomTextField(
+                      ValueKey('pw'),
+                      TextInputType.visiblePassword,
+                      (value) {
                         return (value!.isEmpty || value.length < 6)
                             ? '7자 이상 입력하세요'
                             : null;
                       },
-                      onSaved: (value) {
+                      (value) {
                         _UserPassword = value!;
                       },
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.password_rounded),
-                        hintText: '비밀번호를 입력해주세요',
-                        hintStyle: TextStyle(
-                          color: const Color(0xff999999),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "NotoSansCJKkr",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 24.0 * getScaleHeight(context),
-                        ),
-                        fillColor: Palette.TextFieldColor,
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Palette.borderColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Palette.borderColor),
-                        ),
-                      ),
+                      '',
+                      '비밀번호를 입력해주세요.',
+                      context,
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 54 * getScaleHeight(context)),
 
               //폼 로그인 버튼
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
+                  customElevatedButton(
+                    () {
                       print('signin buttom pressed');
                       _tryValidation();
                     },
-                    child: Text(
-                      "로그인",
-                      style: TextStyle(
-                        color: const Color(0xffffffff),
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "NotoSansCJKkr",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 32.0 * getScaleHeight(context),
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(322 * getScaleWidth(context),
-                          104 * getScaleHeight(context)),
-                      shadowColor: Palette.mintColor,
-                      elevation: 5.0,
-                    ),
+                    '로그인',
+                    context,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
+                  customElevatedButton(
+                    () {
                       print('signup button clicked');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SignUpScreen()),
+                      );
                     },
-                    child: Text('회원가입',
-                        style: TextStyle(
-                          color: const Color(0xffffffff),
-                          fontWeight: FontWeight.w700,
-                          fontFamily: "NotoSansCJKkr",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 32.0 * getScaleHeight(context),
-                        )),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(322 * getScaleWidth(context),
-                          104 * getScaleHeight(context)),
-                      shadowColor: Palette.mintColor,
-                      elevation: 5.0,
-                    ),
-                  )
+                    '회원가입',
+                    context,
+                  ),
                 ],
               ),
               SizedBox(height: 27 * getScaleHeight(context)),
