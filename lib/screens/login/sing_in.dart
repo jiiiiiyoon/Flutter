@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,12 +6,8 @@ import '../../size.dart';
 import '../../custom_widget/custom_textformfield.dart';
 import '../../custom_widget/custom_button.dart';
 import '../../model/user.dart';
+import '../../data/firebase_data_control.dart';
 import './sign_up.dart';
-
-final userRef = FirebaseFirestore.instance.collection('user');
-final missionRef = FirebaseFirestore.instance.collection('mission');
-final quizRef = FirebaseFirestore.instance.collection('quiz');
-final newsRef = FirebaseFirestore.instance.collection('news');
 
 late cUser currentUser;
 
@@ -139,6 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       _tryValidation();
 
                       //firebase 로그인
+
                       await signIn();
                     },
                     '로그인',
@@ -147,11 +143,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   customElevatedButton(
                     () async {
                       print('signup button clicked');
-                      String userName = await Navigator.push(
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SignUpScreen()),
                       );
-                      createUserData(userName);
                     },
                     '회원가입',
                     context,
@@ -166,12 +161,13 @@ class _SignInScreenState extends State<SignInScreen> {
                 children: [
                   GestureDetector(
                     child: Image.asset(
-                      'assets/naver_signin.png',
+                      'assets/google_signin.png',
                       width: 320 * getScaleWidth(context),
                       height: 72 * getScaleWidth(context),
                     ),
                     onTap: () {
-                      print('naver login');
+                      print('google login');
+                      setCurrentUser(_authInstance);
                     },
                   ),
                   GestureDetector(
@@ -201,7 +197,7 @@ class _SignInScreenState extends State<SignInScreen> {
         email: _userEmail,
         password: _userPassword,
       );
-      await setCurrentUser();
+      await setCurrentUser(_authInstance);
       if (newUser.user != null) {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => InfoScreen()));
@@ -211,33 +207,6 @@ class _SignInScreenState extends State<SignInScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('아이디와 비밀번호를 다시 확인해주세요.')),
       );
-    }
-  }
-
-  //로그인한 유저의 정보를 가져와 전역변수에 저장
-  setCurrentUser() async {
-    DocumentSnapshot docSnapshot =
-        await userRef.doc(_authInstance.currentUser!.uid).get();
-    currentUser = cUser.fromDocument(docSnapshot);
-  }
-
-  //회원가입 후 유저 db생성
-  createUserData(String userName) async {
-    DocumentSnapshot docSnapshot =
-        await userRef.doc(_authInstance.currentUser!.uid).get();
-    QuerySnapshot<Map<String, dynamic>> missionSnapshot =
-        await missionRef.get();
-
-    if (!docSnapshot.exists) {
-      print('create user DB');
-      userRef.doc(_authInstance.currentUser!.uid).set({
-        'point_sum': 0,
-        'name': userName,
-        'mission': {
-          '0': missionSnapshot.docs[0].data(),
-          '1': missionSnapshot.docs[1].data()
-        },
-      });
     }
   }
 }

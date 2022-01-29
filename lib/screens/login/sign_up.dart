@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shallwe_app/custom_widget/custom_textformfield.dart';
 import 'package:shallwe_app/custom_widget/custom_button.dart';
+import '../../data/firebase_data_control.dart';
 import './sing_in.dart';
 import '../../size.dart';
 
@@ -140,7 +141,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     );
 
                     if (newUser.user != null) {
-                      Navigator.pop(context, _userName);
+                      Navigator.pop(context);
+                      createUserData(_authInstance, _userName);
                     }
                   } catch (e) {
                     print('error: ${e}');
