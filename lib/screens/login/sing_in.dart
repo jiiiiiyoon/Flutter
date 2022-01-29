@@ -1,10 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shallwe_app/config/color_palette.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shallwe_app/screens/info/info.dart';
 import '../../size.dart';
 import '../../custom_widget/custom_textformfield.dart';
 import '../../custom_widget/custom_button.dart';
+import '../../model/user.dart';
 import './sign_up.dart';
+
+final userRef = FirebaseFirestore.instance.collection('user');
+final missionRef = FirebaseFirestore.instance.collection('mission');
+final quizRef = FirebaseFirestore.instance.collection('quiz');
+final newsRef = FirebaseFirestore.instance.collection('news');
+
+late cUser currentUser;
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -14,24 +24,20 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final _authInstance = FirebaseAuth.instance;
   final _formkey = GlobalKey<FormState>();
   late String _userEmail;
-  late String _UserPassword;
+  late String _userPassword;
 
   void _tryValidation() async {
     final isValid = _formkey.currentState!.validate();
     print(isValid);
+
     if (isValid) {
       _formkey.currentState!.save();
-      //firebase 로그인
-      await signin();
-      print('signin end');
+      print(_userEmail);
+      print(_userPassword);
     }
-  }
-
-  Future<void> signin() async {
-    await Duration(seconds: 3);
-    print('signin');
   }
 
   @override
@@ -98,6 +104,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       (value) {
                         _userEmail = value!;
                       },
+                      Icons.email_rounded,
                       '',
                       '이메일을 입력해주세요.',
                       context,
@@ -111,8 +118,9 @@ class _SignInScreenState extends State<SignInScreen> {
                             : null;
                       },
                       (value) {
-                        _UserPassword = value!;
+                        _userPassword = value!;
                       },
+                      Icons.password_rounded,
                       '',
                       '비밀번호를 입력해주세요.',
                       context,
@@ -126,20 +134,24 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   customElevatedButton(
-                    () {
+                    () async {
                       print('signin buttom pressed');
                       _tryValidation();
+
+                      //firebase 로그인
+                      await signIn();
                     },
                     '로그인',
                     context,
                   ),
                   customElevatedButton(
-                    () {
+                    () async {
                       print('signup button clicked');
-                      Navigator.push(
+                      String userName = await Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => SignUpScreen()),
                       );
+                      createUserData(userName);
                     },
                     '회원가입',
                     context,
@@ -168,7 +180,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       width: 320 * getScaleWidth(context),
                       height: 72 * getScaleWidth(context),
                     ),
-                    onTap: () {
+                    onTap: () async {
                       print('kakao login');
                     },
                   ),
@@ -180,5 +192,52 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       ],
     );
+  }
+
+  //로그인 메서드(이메일, pw)사용
+  signIn() async {
+    try {
+      final newUser = await _authInstance.signInWithEmailAndPassword(
+        email: _userEmail,
+        password: _userPassword,
+      );
+      await setCurrentUser();
+      if (newUser.user != null) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => InfoScreen()));
+      }
+    } catch (error) {
+      print('error: ${error}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('아이디와 비밀번호를 다시 확인해주세요.')),
+      );
+    }
+  }
+
+  //로그인한 유저의 정보를 가져와 전역변수에 저장
+  setCurrentUser() async {
+    DocumentSnapshot docSnapshot =
+        await userRef.doc(_authInstance.currentUser!.uid).get();
+    currentUser = cUser.fromDocument(docSnapshot);
+  }
+
+  //회원가입 후 유저 db생성
+  createUserData(String userName) async {
+    DocumentSnapshot docSnapshot =
+        await userRef.doc(_authInstance.currentUser!.uid).get();
+    QuerySnapshot<Map<String, dynamic>> missionSnapshot =
+        await missionRef.get();
+
+    if (!docSnapshot.exists) {
+      print('create user DB');
+      userRef.doc(_authInstance.currentUser!.uid).set({
+        'point_sum': 0,
+        'name': userName,
+        'mission': {
+          '0': missionSnapshot.docs[0].data(),
+          '1': missionSnapshot.docs[1].data()
+        },
+      });
+    }
   }
 }

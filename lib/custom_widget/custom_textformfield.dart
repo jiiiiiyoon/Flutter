@@ -4,8 +4,15 @@ import 'package:flutter/widgets.dart';
 import 'package:shallwe_app/config/color_palette.dart';
 import '../size.dart';
 
-Widget CustomTextField(ValueKey key, TextInputType textType, Function volidator,
-    Function onSaved, String label, String hintText, BuildContext context) {
+Widget CustomTextField(
+    ValueKey key,
+    TextInputType textType,
+    Function volidator,
+    Function onSaved,
+    IconData icon,
+    String label,
+    String hintText,
+    BuildContext context) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -28,9 +35,9 @@ Widget CustomTextField(ValueKey key, TextInputType textType, Function volidator,
             : false,
         autofocus: false,
         validator: (value) => volidator(value),
-        onSaved: (value) => onSaved(value),
+        onChanged: (value) => onSaved(value),
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.password_rounded),
+          prefixIcon: Icon(icon),
           hintText: hintText,
           hintStyle: TextStyle(
             color: const Color(0xff999999),

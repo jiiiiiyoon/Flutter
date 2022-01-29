@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shallwe_app/custom_widget/custom_textformfield.dart';
 import 'package:shallwe_app/custom_widget/custom_button.dart';
+import './sing_in.dart';
 import '../../size.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -11,6 +13,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final _authInstance = FirebaseAuth.instance;
   final _formkey = GlobalKey<FormState>();
   late String _userEmail;
   late String _userPassword;
@@ -54,6 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   (value) {
                     _userEmail = value!;
                   },
+                  Icons.email_rounded,
                   '이메일',
                   '이메일을 입력해주세요',
                   context,
@@ -67,8 +71,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         : null;
                   },
                   (value) {
-                    _userEmail = value!;
+                    _userPassword = value!;
                   },
+                  Icons.password_rounded,
                   '비밀번호',
                   '비밀번호를 입력해주세요',
                   context,
@@ -77,13 +82,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ValueKey('pwcheck'),
                   TextInputType.visiblePassword,
                   (value) {
-                    return (value!.isEmpty || value == _userPassword)
+                    return (value!.isEmpty || value != _userPassword)
                         ? '비밀번호가 일치하지 않습니다.'
                         : null;
                   },
                   (value) {
                     _pwCheck = true;
                   },
+                  Icons.password_rounded,
                   '비밀번호 확인',
                   '비밀번호를 입력해주세요',
                   context,
@@ -97,6 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   (value) {
                     _userName = value!;
                   },
+                  Icons.person,
                   '이름',
                   '이름을 입력해주세요',
                   context,
@@ -110,6 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   (value) {
                     _userEmail = value!;
                   },
+                  Icons.phone,
                   '휴대전화',
                   '전화번호를 입력해주세요',
                   context,
@@ -122,9 +130,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               customElevatedButton(
-                () {
+                () async {
                   //firebase 가입
-                  print('signup firebase');
+                  try {
+                    final newUser =
+                        await _authInstance.createUserWithEmailAndPassword(
+                      email: _userEmail,
+                      password: _userPassword,
+                    );
+
+                    if (newUser.user != null) {
+                      Navigator.pop(context, _userName);
+                    }
+                  } catch (e) {
+                    print('error: ${e}');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('이미 존재하는 계정입니다.')),
+                    );
+                  }
                 },
                 '가입하기',
                 context,
@@ -141,5 +164,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ],
       ),
     );
+  }
+
+  signUp() async {
+    try {
+      final newUser = await _authInstance.signInWithEmailAndPassword(
+        email: _userEmail,
+        password: _userPassword,
+      );
+      if (newUser.user != null) {
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      print('error: ${e}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('존재하는 계정입니다.')),
+      );
+    }
   }
 }

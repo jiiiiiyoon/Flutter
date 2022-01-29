@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "47718807160",
+    "project_id": "junjun-chat",
+    "storage_bucket": "junjun-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47718807160:android:18a47c0506eab50f625f8d",
+        "android_client_info": {
+          "package_name": "com.example.chat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "47718807160-steelj7u628scamqb9pemjvbdrlnss97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9iGicmIyHg30EchIB6xw5XM1fgkjXA5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "47718807160-steelj7u628scamqb9pemjvbdrlnss97.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47718807160:android:71355fdd7acbd977625f8d",
+        "android_client_info": {
+          "package_name": "com.example.shallwe_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "47718807160-steelj7u628scamqb9pemjvbdrlnss97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9iGicmIyHg30EchIB6xw5XM1fgkjXA5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "47718807160-steelj7u628scamqb9pemjvbdrlnss97.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
