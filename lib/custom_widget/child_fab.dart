@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shallwe_app/config/color_palette.dart';
 import '../size.dart';
 
 class ChildActionButton extends StatelessWidget {
@@ -14,15 +15,10 @@ class ChildActionButton extends StatelessWidget {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: CircleBorder(),
-            padding: EdgeInsets.all(
-                icon.semanticLabel == 'big' ? 30 : 25 * getScaleWidth(context)),
-            primary: Color(0xffa69988),
+            padding: EdgeInsets.all(45 * getScaleWidth(context)),
+            primary: Palette.mintColor,
             elevation: 7,
-            shadowColor: Colors.black,
-            side: BorderSide(
-              width: 1.0,
-              color: Color(0xff707070),
-            ),
+            shadowColor: Palette.mintColor,
           ),
           onPressed: onpressed,
           child: null,
@@ -32,11 +28,7 @@ class ChildActionButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             shape: CircleBorder(),
             padding: EdgeInsets.all(8 * getScaleHeight(context)),
-            primary: Color(0xffd6d2cb),
-            side: BorderSide(
-              width: 1.0,
-              color: Color(0xff707070),
-            ),
+            primary: Color(0xfff0f0f5),
           ),
           onPressed: onpressed,
           child: icon,

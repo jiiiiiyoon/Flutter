@@ -141,6 +141,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     );
 
                     if (newUser.user != null) {
+                      await newUser.user!.updateDisplayName(_userName);
+
+                      //휴대폰 사용은 추후 이야기
+                      // newUser.user!.updatePhoneNumber(_userPhNum);
                       Navigator.pop(context);
                       createUserData(_authInstance, _userName);
                     }

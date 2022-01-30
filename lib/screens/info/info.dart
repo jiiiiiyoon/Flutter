@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../custom_widget/child_fab.dart';
+import '../../custom_widget/expandable_fab.dart';
 import '../login/sing_in.dart';
 
 class InfoScreen extends StatefulWidget {
@@ -12,6 +14,7 @@ class InfoScreen extends StatefulWidget {
 class _InfoScreenState extends State<InfoScreen> {
   final _authInstance = FirebaseAuth.instance;
   dynamic loggedUser;
+
   void getCurrentUser() {
     try {
       final user = _authInstance.currentUser;
@@ -44,10 +47,14 @@ class _InfoScreenState extends State<InfoScreen> {
           Text(currentUser.missions.toString()),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          getCurrentUser();
-        },
+      floatingActionButton: ParentActionButton(
+        distance: 70.0,
+        children: [
+          ChildActionButton(
+              onpressed: () {}, icon: Icon(Icons.emoji_flags_outlined)),
+          ChildActionButton(onpressed: () {}, icon: Icon(Icons.house_outlined)),
+          ChildActionButton(onpressed: () {}, icon: Icon(Icons.quiz_outlined)),
+        ],
       ),
     );
   }

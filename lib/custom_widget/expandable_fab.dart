@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../config/color_palette.dart';
 import 'dart:math';
 
 class ParentActionButton extends StatefulWidget {
@@ -53,7 +54,7 @@ class _ParentActionButtonState extends State<ParentActionButton>
     List<_ExpandableActionButton> animChildren = [];
     final int count = widget.children.length;
 
-    for (var i = 0, degree = 10.0; i < count; i++, degree += 70) {
+    for (var i = 0, degree = 0.0; i < count; i++, degree += 70) {
       animChildren.add(_ExpandableActionButton(
         distance: widget.distance,
         progress: _expandAnimation,
@@ -69,27 +70,27 @@ class _ParentActionButtonState extends State<ParentActionButton>
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xff707070), width: 1),
+        // border: Border.all(color: const Color(0xff707070), width: 1),
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-              color: const Color(0xcc000000),
+              color: Palette.mintColor,
               offset: Offset(0, 3),
               blurRadius: 6,
               spreadRadius: 0),
         ],
-        color: const Color(0xffa69988),
+        color: Palette.mintColor,
       ),
       child: AnimatedContainer(
         transformAlignment: Alignment.center,
         duration: Duration(milliseconds: 100),
         transform: Matrix4.rotationZ(_isOpen ? pi / 4 : 0),
         child: FloatingActionButton(
-          backgroundColor: _isOpen ? Color(0xfff5f5f5) : Color(0xffa69988),
+          backgroundColor: _isOpen ? Color(0xfff5f5f5) : Palette.mintColor,
           onPressed: toggle,
           child: Icon(
             Icons.add_box_rounded,
-            color: _isOpen ? Color(0xffa69988) : Color(0xfff5f5f5),
+            color: _isOpen ? Palette.mintColor : Color(0xfff5f5f5),
           ),
         ),
       ),
@@ -125,10 +126,10 @@ class _ExpandableActionButton extends StatelessWidget {
         child: child,
         builder: (context, child) {
           final Offset offset = Offset.fromDirection(
-              degree * (pi / 180), progress.value * distance);
+              degree * (pi / 280), progress.value * distance);
           return Positioned(
-            right: offset.dx + 1,
-            bottom: offset.dy + 3,
+            right: offset.dx - 1,
+            bottom: offset.dy + 6,
             child: child!,
           );
         });
