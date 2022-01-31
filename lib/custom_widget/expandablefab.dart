@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shallwe_app/screens/info/info.dart';
 import 'package:shallwe_app/screens/quiz/quiz.dart';
 import './parent_fab.dart';
 import './child_fab.dart';

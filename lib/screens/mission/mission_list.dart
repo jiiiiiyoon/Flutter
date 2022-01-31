@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shallwe_app/config/color_palette.dart';
 import 'package:shallwe_app/custom_widget/custom_dialog.dart';
 import 'package:shallwe_app/model/mission.dart';
 import 'package:shallwe_app/screens/login/sing_in.dart';
+import '../../data/firebase_data_control.dart';
 // import '../../custom_widget/list_tile.dart';
 import '../../size.dart';
 import '../../provider/point_provider.dart';
@@ -16,6 +18,7 @@ class MissionList extends StatefulWidget {
 }
 
 class _MissionListState extends State<MissionList> {
+  final _authInstance = FirebaseAuth.instance;
   late PointProvider _pointProvider;
 
   @override
@@ -100,6 +103,7 @@ class _MissionListState extends State<MissionList> {
             check ? _pointProvider.addPoint(5) : _pointProvider.subPoint(5);
             print(currentUser.missions[idx].weekCheck);
             print(currentUser.pointSum);
+            updateUserData(_authInstance, idx, check, currentUser.pointSum);
             //유저 점수 및 미션 클리어 파이어베이스 업데이트
             //
             //

@@ -42,3 +42,11 @@ createUserData(FirebaseAuth _authInstance, String userName) async {
     });
   }
 }
+
+updateUserData(
+    FirebaseAuth _authInstance, int idx, bool weekCheck, int userPoint) async {
+  await userRef.doc(_authInstance.currentUser!.uid).update({
+    'mission.${idx}.week_check': weekCheck, //중첩된 필드 업데이트
+    'point_sum': userPoint,
+  });
+}
