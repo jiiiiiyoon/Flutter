@@ -54,7 +54,7 @@ class _ParentActionButtonState extends State<ParentActionButton>
     List<_ExpandableActionButton> animChildren = [];
     final int count = widget.children.length;
 
-    for (var i = 0, degree = 0.0; i < count; i++, degree += 70) {
+    for (var i = 0, degree = 5.0; i < count; i++, degree += 70) {
       animChildren.add(_ExpandableActionButton(
         distance: widget.distance,
         progress: _expandAnimation,

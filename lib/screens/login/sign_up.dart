@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shallwe_app/custom_widget/custom_textformfield.dart';
 import 'package:shallwe_app/custom_widget/custom_button.dart';
 import '../../data/firebase_data_control.dart';
-import './sing_in.dart';
 import '../../size.dart';
 
 class SignUpScreen extends StatefulWidget {

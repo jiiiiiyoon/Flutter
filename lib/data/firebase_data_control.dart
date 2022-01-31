@@ -15,8 +15,8 @@ setCurrentUser(FirebaseAuth _authInstance, String? userName) async {
 
   if (!docSnapshot.exists) {
     await createUserData(_authInstance, userName!);
+    docSnapshot = await userRef.doc(_authInstance.currentUser!.uid).get();
   }
-  docSnapshot = await userRef.doc(_authInstance.currentUser!.uid).get();
 
   currentUser = cUser.fromDocument(docSnapshot);
 }

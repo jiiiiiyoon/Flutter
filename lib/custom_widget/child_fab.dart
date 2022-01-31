@@ -15,9 +15,9 @@ class ChildActionButton extends StatelessWidget {
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: CircleBorder(),
-            padding: EdgeInsets.all(45 * getScaleWidth(context)),
+            padding: EdgeInsets.all(50 * getScaleHeight(context)),
             primary: Palette.mintColor,
-            elevation: 7,
+            elevation: 7 * getScaleHeight(context),
             shadowColor: Palette.mintColor,
           ),
           onPressed: onpressed,

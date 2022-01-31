@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../custom_widget/child_fab.dart';
-import '../../custom_widget/expandable_fab.dart';
+import '../../custom_widget/expandablefab.dart';
 import '../login/sing_in.dart';
 
 class InfoScreen extends StatefulWidget {
@@ -47,15 +46,7 @@ class _InfoScreenState extends State<InfoScreen> {
           Text(currentUser.missions.toString()),
         ],
       ),
-      floatingActionButton: ParentActionButton(
-        distance: 70.0,
-        children: [
-          ChildActionButton(
-              onpressed: () {}, icon: Icon(Icons.emoji_flags_outlined)),
-          ChildActionButton(onpressed: () {}, icon: Icon(Icons.house_outlined)),
-          ChildActionButton(onpressed: () {}, icon: Icon(Icons.quiz_outlined)),
-        ],
-      ),
+      floatingActionButton: expandableFab(context),
     );
   }
 }

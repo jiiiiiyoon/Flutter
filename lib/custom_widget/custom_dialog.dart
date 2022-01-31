@@ -1,225 +1,117 @@
-// import 'package:flutter/material.dart';
-// import '../size.dart';
+import 'package:flutter/material.dart';
+import 'package:shallwe_app/config/color_palette.dart';
+import 'package:shallwe_app/screens/login/sing_in.dart';
+import '../size.dart';
 
-// class CustomDialog extends StatefulWidget {
-//   final String animal;
-//   final bool stampPossible;
-//   CustomDialog({
-//     required this.animal,
-//     required this.stampPossible,
-//   });
+class CustomDialog extends StatefulWidget {
+  final int idx;
 
-//   @override
-//   _CustomDialogState createState() => _CustomDialogState();
-// }
+  const CustomDialog({Key? key, required this.idx}) : super(key: key);
+  @override
+  _CustomDialogState createState() => _CustomDialogState();
+}
 
-// class _CustomDialogState extends State<CustomDialog> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Dialog(
-//       shape: RoundedRectangleBorder(
-//         borderRadius: BorderRadius.circular(10),
-//       ),
-//       elevation: 10,
-//       backgroundColor: Colors.white,
-//       child: DialogBox(),
-//     );
-//   }
+class _CustomDialogState extends State<CustomDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      elevation: 10,
+      backgroundColor: Colors.white,
+      child: DialogBox(),
+    );
+  }
 
-//   Widget DialogBox() {
-//     return ClipRRect(
-//       borderRadius: BorderRadius.circular(10),
-//       child: Container(
-//         width: 250 * getScaleWidth(context),
-//         height: 134 * getScaleHeight(context),
-//         decoration: BoxDecoration(
-//           boxShadow: [
-//             BoxShadow(
-//               color: const Color(0x1a000000),
-//               offset: Offset(0, 3),
-//               blurRadius: 6,
-//               spreadRadius: 0,
-//             ),
-//           ],
-//           color: const Color(0xffffffff),
-//         ),
-//         //다이얼로그 내용
-//         child: widget.animal == 'recog_fail' ? recogFail() : checkAnimal(),
-//       ),
-//     );
-//   }
+  Widget DialogBox() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        width: 600 * getScaleWidth(context),
+        height: 400 * getScaleHeight(context),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0x1a000000),
+              offset: Offset(0, 3),
+              blurRadius: 6,
+              spreadRadius: 0,
+            ),
+          ],
+          color: const Color(0xffffffff),
+        ),
+        //다이얼로그 내용
+        child: info(),
+      ),
+    );
+  }
 
-//   Column recogFail() {
-//     return Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         Row(
-//           //텍스트 컨테이너
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Text(
-//               "인식할 수 없는 동물입니다.",
-//               style: const TextStyle(
-//                 color: const Color(0xff343435),
-//                 fontWeight: FontWeight.w400,
-//                 fontFamily: "NotoSans",
-//                 fontStyle: FontStyle.normal,
-//                 fontSize: 15.0,
-//               ),
-//             ),
-//           ],
-//         ),
-//         //버튼 컨테이너
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             ElevatedButton(
-//               style: ElevatedButton.styleFrom(
-//                 minimumSize: Size(
-//                     100 * getScaleWidth(context), 40 * getScaleHeight(context)),
-//                 primary: Color(0xffeea300),
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(19),
-//                 ),
-//               ),
-//               child: Text(
-//                 "메인으로 돌아가기",
-//                 style: const TextStyle(
-//                   color: const Color(0xff343435),
-//                   fontWeight: FontWeight.w600,
-//                   fontFamily: "NotoSans",
-//                   fontStyle: FontStyle.normal,
-//                   fontSize: 15.0,
-//                 ),
-//               ),
-//               onPressed: () {
-//                 Navigator.pop(context, false);
-//               },
-//             ),
-//           ],
-//         )
-//       ],
-//     );
-//   }
-
-//   Column checkAnimal() {
-//     return Column(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       children: [
-//         Row(
-//           //텍스트 컨테이너
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Text(
-//               "사진 속 동물이",
-//               style: const TextStyle(
-//                 color: const Color(0xff343435),
-//                 fontWeight: FontWeight.w400,
-//                 fontFamily: "NotoSans",
-//                 fontStyle: FontStyle.normal,
-//                 fontSize: 10.0,
-//               ),
-//             ),
-//             Text(
-//               animal_list[get_animal_idx[
-//                   widget.animal]!], //이부분은 나중에 엠엘 돌리고 난 후 이미지에 맞는 이름으로 변경
-//               style: const TextStyle(
-//                 color: const Color(0xff343435),
-//                 fontWeight: FontWeight.w600,
-//                 fontFamily: "NotoSans",
-//                 fontStyle: FontStyle.normal,
-//                 fontSize: 15.0,
-//               ),
-//             ),
-//             Text(
-//               "이(가) 맞나요?",
-//               style: const TextStyle(
-//                 color: const Color(0xff343435),
-//                 fontWeight: FontWeight.w400,
-//                 fontFamily: "NotoSans",
-//                 fontStyle: FontStyle.normal,
-//                 fontSize: 10.0,
-//               ),
-//             ),
-//           ],
-//         ),
-//         widget.stampPossible
-//             ? SizedBox(height: 17 * getScaleHeight(context))
-//             : Text(
-//                 "(동물원 안에 있지 않아 스탬프를 획득하실 수 없습니다)",
-//                 style: const TextStyle(
-//                   color: const Color(0xff343435),
-//                   fontWeight: FontWeight.w400,
-//                   fontFamily: "NotoSans",
-//                   fontStyle: FontStyle.normal,
-//                   fontSize: 9.0,
-//                 ),
-//               ),
-
-//         //버튼 컨테이너
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             ElevatedButton(
-//               style: ElevatedButton.styleFrom(
-//                 minimumSize: Size(
-//                     100 * getScaleWidth(context), 40 * getScaleHeight(context)),
-//                 primary: Color(0xffeea300),
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(19),
-//                 ),
-//               ),
-//               child: Text(
-//                 "네",
-//                 style: const TextStyle(
-//                   color: const Color(0xff343435),
-//                   fontWeight: FontWeight.w600,
-//                   fontFamily: "NotoSans",
-//                   fontStyle: FontStyle.normal,
-//                   fontSize: 15.0,
-//                 ),
-//               ),
-//               onPressed: () async {
-//                 //go to info page
-//                 if (widget.stampPossible) {
-//                   //동물원 안에 있다면 DB에 스탬프 등록
-//                   await addStamp(widget.animal)
-//                       .whenComplete(() => Navigator.pop(context, true));
-//                 } else {
-//                   //아니라면 등록하지않음
-//                   Navigator.pop(context, true);
-//                 }
-//               },
-//             ),
-//             SizedBox(width: 10 * getScaleWidth(context)),
-//             ElevatedButton(
-//               style: ElevatedButton.styleFrom(
-//                 minimumSize: Size(
-//                     100 * getScaleWidth(context), 40 * getScaleHeight(context)),
-//                 primary: Color(0xfff3c766),
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(19),
-//                 ),
-//               ),
-//               child: Text(
-//                 "아니요",
-//                 style: const TextStyle(
-//                   color: const Color(0xff343435),
-//                   fontWeight: FontWeight.w600,
-//                   fontFamily: "NotoSans",
-//                   fontStyle: FontStyle.normal,
-//                   fontSize: 15.0,
-//                 ),
-//                 textAlign: TextAlign.left,
-//               ),
-//               onPressed: () {
-//                 //go to main
-//                 Navigator.pop(context, false);
-//               },
-//             ),
-//           ],
-//         )
-//       ],
-//     );
-//   }
-// }
+  Widget info() {
+    return Padding(
+      padding: EdgeInsets.all(8 * getScaleHeight(context)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // 쓰레기 5개 줍기
+          Text(currentUser.missions[widget.idx].title,
+              style: TextStyle(
+                color: const Color(0xff191919),
+                fontWeight: FontWeight.w700,
+                fontFamily: "NotoSansCJKkr",
+                fontStyle: FontStyle.normal,
+                fontSize: 36 * getScaleHeight(context),
+              ),
+              textAlign: TextAlign.center),
+          Container(
+            alignment: Alignment.center,
+            height: 200 * getScaleHeight(context),
+            child: SingleChildScrollView(
+              child: Text(
+                currentUser.missions[widget.idx].info,
+                style: TextStyle(
+                  color: const Color(0xff343435),
+                  fontWeight: FontWeight.w400,
+                  fontFamily: "NotoSans",
+                  fontStyle: FontStyle.normal,
+                  fontSize: 30 * getScaleHeight(context),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          //버튼 컨테이너
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(400 * getScaleWidth(context),
+                      50 * getScaleHeight(context)),
+                  primary: Palette.mintColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(19),
+                  ),
+                ),
+                child: Text(
+                  "돌아가기",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: "NotoSans",
+                    fontStyle: FontStyle.normal,
+                    fontSize: 15.0,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
