@@ -9,9 +9,15 @@ final quizRef = FirebaseFirestore.instance.collection('quiz');
 final newsRef = FirebaseFirestore.instance.collection('news');
 
 //로그인한 유저의 정보를 가져와 전역변수에 저장
-setCurrentUser(FirebaseAuth _authInstance) async {
+setCurrentUser(FirebaseAuth _authInstance, String? userName) async {
   DocumentSnapshot docSnapshot =
       await userRef.doc(_authInstance.currentUser!.uid).get();
+
+  if (!docSnapshot.exists) {
+    await createUserData(_authInstance, userName!);
+    docSnapshot = await userRef.doc(_authInstance.currentUser!.uid).get();
+  }
+
   currentUser = cUser.fromDocument(docSnapshot);
 }
 
@@ -21,17 +27,18 @@ createUserData(FirebaseAuth _authInstance, String userName) async {
       await userRef.doc(_authInstance.currentUser!.uid).get();
   QuerySnapshot<Map<String, dynamic>> missionSnapshot = await missionRef.get();
 
+  Map<String, dynamic> missions = {};
+  int docIdx = 0;
+  missionSnapshot.docs.forEach((element) {
+    missions.addAll({docIdx.toString(): element.data()});
+    docIdx++;
+  });
   if (!docSnapshot.exists) {
     print('create user DB');
     userRef.doc(_authInstance.currentUser!.uid).set({
       'point_sum': 0,
       'name': userName,
-      'mission': {
-        '0': missionSnapshot.docs[0].data(),
-        '1': missionSnapshot.docs[1].data(),
-        '2': missionSnapshot.docs[2].data(),
-        '3': missionSnapshot.docs[3].data(),
-      },
+      'mission': missions,
     });
   }
 }

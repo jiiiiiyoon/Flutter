@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shallwe_app/custom_widget/custom_textformfield.dart';
 import 'package:shallwe_app/custom_widget/custom_button.dart';
 import '../../data/firebase_data_control.dart';
-import './sing_in.dart';
 import '../../size.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -141,6 +140,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     );
 
                     if (newUser.user != null) {
+                      await newUser.user!.updateDisplayName(_userName);
+
+                      //휴대폰 사용은 추후 이야기
+                      // newUser.user!.updatePhoneNumber(_userPhNum);
                       Navigator.pop(context);
                       createUserData(_authInstance, _userName);
                     }

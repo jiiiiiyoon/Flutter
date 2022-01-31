@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:shallwe_app/screens/info/info.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../size.dart';
 import '../../custom_widget/custom_textformfield.dart';
 import '../../custom_widget/custom_button.dart';
@@ -165,19 +166,20 @@ class _SignInScreenState extends State<SignInScreen> {
                       width: 320 * getScaleWidth(context),
                       height: 72 * getScaleWidth(context),
                     ),
-                    onTap: () {
+                    onTap: () async {
                       print('google login');
-                      setCurrentUser(_authInstance);
+                      await signInWithGoogle();
                     },
                   ),
                   GestureDetector(
                     child: Image.asset(
-                      'assets/kakao_signin.png',
+                      'assets/facebook_signin.png',
                       width: 320 * getScaleWidth(context),
                       height: 72 * getScaleWidth(context),
                     ),
                     onTap: () async {
-                      print('kakao login');
+                      print('facebook login');
+                      await signInWithFacebook();
                     },
                   ),
                 ],
@@ -197,8 +199,9 @@ class _SignInScreenState extends State<SignInScreen> {
         email: _userEmail,
         password: _userPassword,
       );
-      await setCurrentUser(_authInstance);
+
       if (newUser.user != null) {
+        await setCurrentUser(_authInstance, null);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => InfoScreen()));
       }
@@ -206,6 +209,67 @@ class _SignInScreenState extends State<SignInScreen> {
       print('error: ${error}');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('아이디와 비밀번호를 다시 확인해주세요.')),
+      );
+    }
+  }
+
+  signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      final newUser = await _authInstance.signInWithCredential(credential);
+      if (newUser.user != null) {
+        print(newUser.user!.displayName);
+
+        // await createUserData(_authInstance, );
+        await setCurrentUser(_authInstance, newUser.user!.displayName!);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => InfoScreen()));
+      }
+    } catch (error) {
+      print(error);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('동일한 이메일로 가입된 계정이 있습니다.')),
+      );
+    }
+  }
+
+  signInWithFacebook() async {
+    // Trigger the sign-in flow
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      // Create a credential from the access token
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+      // Once signed in, return the UserCredential
+      final newUser = await FirebaseAuth.instance
+          .signInWithCredential(facebookAuthCredential);
+
+      if (newUser.user != null) {
+        print(newUser.user!.displayName);
+
+        // await createUserData(_authInstance, );
+        await setCurrentUser(_authInstance, newUser.user!.displayName!);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => InfoScreen()));
+      }
+    } catch (error) {
+      print(error);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('동일한 이메일로 가입된 계정이 있습니다.')),
       );
     }
   }
