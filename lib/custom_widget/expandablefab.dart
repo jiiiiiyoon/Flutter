@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shallwe_app/screens/info/info.dart';
+import 'package:shallwe_app/screens/quiz/quiz.dart';
 import './parent_fab.dart';
 import './child_fab.dart';
 import '../screens/mission/mission.dart';
@@ -11,8 +13,9 @@ ParentActionButton expandableFab(BuildContext context) {
       ChildActionButton(
           onpressed: () {
             print('mission buttom clicked');
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => Mission()));
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => Mission()),
+            );
           },
           icon: Icon(Icons.emoji_flags_outlined)),
       ChildActionButton(
@@ -22,6 +25,9 @@ ParentActionButton expandableFab(BuildContext context) {
           icon: Icon(Icons.house_outlined)),
       ChildActionButton(
           onpressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => QuizScreen(1)),
+            );
             print('quiz buttom clicked');
           },
           icon: Icon(Icons.quiz_outlined))
