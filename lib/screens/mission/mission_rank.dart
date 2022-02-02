@@ -71,16 +71,28 @@ class _MissionRankState extends State<MissionRank> {
           width: 616 * getScaleWidth(context),
           height: 100 * getScaleHeight(context),
           decoration: BoxDecoration(
-            border: Border.all(color: const Color(0xff707070), width: 1),
+            border: idx > 2
+                ? Border.all(color: Colors.black, width: 1)
+                : idx == 0
+                    ? Border.all(color: Color(0xffFFD700), width: 3)
+                    : idx == 1
+                        ? Border.all(color: Color(0xffC0C0C0), width: 3)
+                        : Border.all(color: Color(0xffb08d57), width: 3),
             color: const Color(0xffffffff),
           ),
           child: Padding(
             padding: EdgeInsets.fromLTRB(
-                40 * getScaleWidth(context), 0, 20 * getScaleWidth(context), 0),
+                20 * getScaleWidth(context), 0, 40 * getScaleWidth(context), 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildText((idx + 1).toString(), context),
+                idx > 2
+                    ? _buildText((idx + 1).toString(), context)
+                    : idx == 0
+                        ? Image.asset('assets/frst.png', scale: 17)
+                        : idx == 1
+                            ? Image.asset('assets/secd.png', scale: 17)
+                            : Image.asset('assets/thrd.png', scale: 17),
                 _buildText(rank['name'], context),
                 _buildText('${rank['point_sum']}', context),
               ],
@@ -92,15 +104,18 @@ class _MissionRankState extends State<MissionRank> {
     );
   }
 
-  Text _buildText(String text, BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(
-        color: const Color(0xff767676),
-        fontWeight: FontWeight.w700,
-        fontFamily: "NotoSansCJKkr",
-        fontStyle: FontStyle.normal,
-        fontSize: 25 * getScaleWidth(context),
+  Widget _buildText(String text, BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 20 * getScaleWidth(context)),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: const Color(0xff767676),
+          fontWeight: FontWeight.w700,
+          fontFamily: "NotoSansCJKkr",
+          fontStyle: FontStyle.normal,
+          fontSize: 25 * getScaleWidth(context),
+        ),
       ),
     );
   }
