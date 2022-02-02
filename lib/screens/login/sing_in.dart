@@ -25,6 +25,12 @@ class _SignInScreenState extends State<SignInScreen> {
   late String _userEmail;
   late String _userPassword;
 
+  @override
+  void dispose() {
+    _authInstance.signOut();
+    super.dispose();
+  }
+
   void _tryValidation() async {
     final isValid = _formkey.currentState!.validate();
     print(isValid);
@@ -203,7 +209,9 @@ class _SignInScreenState extends State<SignInScreen> {
       if (newUser.user != null) {
         await setCurrentUser(_authInstance, null);
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => InfoScreen()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => InfoScreen(key: UniqueKey())));
       }
     } catch (error) {
       print('error: ${error}');
@@ -235,7 +243,9 @@ class _SignInScreenState extends State<SignInScreen> {
         // await createUserData(_authInstance, );
         await setCurrentUser(_authInstance, newUser.user!.displayName!);
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => InfoScreen()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => InfoScreen(key: UniqueKey())));
       }
     } catch (error) {
       print(error);
@@ -264,7 +274,9 @@ class _SignInScreenState extends State<SignInScreen> {
         // await createUserData(_authInstance, );
         await setCurrentUser(_authInstance, newUser.user!.displayName!);
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => InfoScreen()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => InfoScreen(key: UniqueKey())));
       }
     } catch (error) {
       print(error);

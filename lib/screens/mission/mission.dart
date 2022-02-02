@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shallwe_app/config/color_palette.dart';
-import 'package:shallwe_app/custom_widget/expandablefab.dart';
+import 'package:shallwe_app/custom_widget/expandable_fab.dart';
 import 'package:shallwe_app/provider/point_provider.dart';
+import 'package:shallwe_app/provider/rank_provider.dart';
 import 'package:shallwe_app/screens/mission/mission_list.dart';
+import 'package:shallwe_app/screens/mission/mission_rank.dart';
 import 'package:shallwe_app/size.dart';
 
 class Mission extends StatefulWidget {
@@ -19,7 +21,6 @@ class _MissionState extends State<Mission> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    print('mission init');
     super.initState();
   }
 
@@ -31,8 +32,15 @@ class _MissionState extends State<Mission> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<PointProvider>(
-      create: (_) => PointProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<PointProvider>(
+          create: (_) => PointProvider(),
+        ),
+        ChangeNotifierProvider<RankProvider>(
+          create: (_) => RankProvider(),
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(title: Text('Mission')),
         body: Padding(
@@ -104,24 +112,24 @@ class _MissionState extends State<Mission> with SingleTickerProviderStateMixin {
                           controller: _tabController,
                           children: [
                             MissionList(),
-                            Text('rank'),
+                            MissionRank(),
                           ],
                         ),
                       ),
                     ],
                   ),
                 ),
-                _buildText(context),
+                _buildText(),
               ],
             ),
           ),
         ),
-        floatingActionButton: expandableFab(context),
+        floatingActionButton: expandableFab(context, widget.key),
       ),
     );
   }
 
-  Column _buildText(BuildContext context) {
+  Column _buildText() {
     //점수 / 랭킹 관련 택스트 출력
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,20 +146,24 @@ class _MissionState extends State<Mission> with SingleTickerProviderStateMixin {
         Row(
           children: [
             SizedBox(width: 100 * getScaleWidth(context)),
-            Consumer<PointProvider>(
-              builder: (context, value, child) => Text(
-                (_tabController.index == 0)
-                    ? '${value.userPoint}'
-                    : '${value.userPoint}', //추후 랭킹으로 교체
-                style: TextStyle(
-                  color: const Color(0xff000000),
-                  fontWeight: FontWeight.w700,
-                  fontFamily: "NotoSansCJKkr",
-                  fontStyle: FontStyle.normal,
-                  fontSize: 56.0 * getScaleHeight(context),
-                ),
-              ),
-            ),
+            Builder(builder: (context) {
+              return Consumer2<PointProvider, RankProvider>(
+                builder: (context, point, rank, child) {
+                  return Text(
+                    (_tabController.index == 0)
+                        ? '${point.userPoint}'
+                        : '${rank.userRank}', //추후 랭킹으로 교체
+                    style: TextStyle(
+                      color: const Color(0xff000000),
+                      fontWeight: FontWeight.w700,
+                      fontFamily: "NotoSansCJKkr",
+                      fontStyle: FontStyle.normal,
+                      fontSize: 56.0 * getScaleHeight(context),
+                    ),
+                  );
+                },
+              );
+            }),
             Text(
               (_tabController.index == 0) ? '점 입니다' : '위 입니다',
               style: TextStyle(

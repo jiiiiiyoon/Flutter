@@ -135,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   try {
                     final newUser =
                         await _authInstance.createUserWithEmailAndPassword(
-                      email: _userEmail,
+                      email: _userEmail.trim(), //이메일 형식 에러가 나서 trim으로 문자열 정리
                       password: _userPassword,
                     );
 

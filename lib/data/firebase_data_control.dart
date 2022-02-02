@@ -9,6 +9,7 @@ final userRef = FirebaseFirestore.instance.collection('user');
 final missionRef = FirebaseFirestore.instance.collection('mission');
 final quizRef = FirebaseFirestore.instance.collection('quiz');
 final newsRef = FirebaseFirestore.instance.collection('news');
+final rankRef = FirebaseFirestore.instance.collection('rank');
 
 //로그인한 유저의 정보를 가져와 전역변수에 저장
 setCurrentUser(FirebaseAuth _authInstance, String? userName) async {
@@ -44,6 +45,13 @@ createUserData(FirebaseAuth _authInstance, String userName) async {
       'name': userName,
       'mission': missions,
     });
+    print('create rank db');
+    await rankRef.doc('rank').update({
+      '${_authInstance.currentUser!.uid}': {
+        'name': userName,
+        'point_sum': 0,
+      }
+    });
   }
 }
 
@@ -54,13 +62,15 @@ updateUserData(
     'mission.${idx}.week_check': weekCheck, //중첩된 필드 업데이트
     'point_sum': userPoint,
   });
+  await rankRef
+      .doc('rank')
+      .update({'${_authInstance.currentUser!.uid}.point_sum': userPoint});
 }
 
 //===================================
 getQuizData() async {
   QuerySnapshot snapshots = await quizRef.get();
   print('get quiz data');
-
   return await QuizList.fromDocument(snapshots);
 }
 
@@ -68,4 +78,9 @@ getNewsData() async {
   QuerySnapshot snapshots = await newsRef.get();
   print('get news data');
   return await NewsList.fromDocument(snapshots);
+}
+
+getRankStream() {
+  print('start get stream');
+  return rankRef.doc('rank').snapshots();
 }

@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shallwe_app/config/color_palette.dart';
-import 'package:shallwe_app/custom_widget/expandablefab.dart';
+import 'package:shallwe_app/custom_widget/expandable_fab.dart';
 import 'package:shallwe_app/size.dart';
 
 class QuizScreen extends StatefulWidget {
   final int i;
-  QuizScreen(this.i);
+  QuizScreen({Key? key, required this.i}) : super(key: key);
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -226,7 +226,7 @@ class _QuizScreenState extends State<QuizScreen> {
           ),
         ],
       ),
-      floatingActionButton: expandableFab(context),
+      floatingActionButton: expandableFab(context, widget.key),
     );
   }
 }

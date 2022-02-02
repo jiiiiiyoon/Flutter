@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shallwe_app/config/color_palette.dart';
 import 'package:shallwe_app/size.dart';
-import '../../custom_widget/expandablefab.dart';
+import '../../custom_widget/expandable_fab.dart';
 import '../login/sing_in.dart';
 
 class InfoScreen extends StatefulWidget {
@@ -28,6 +28,12 @@ class _InfoScreenState extends State<InfoScreen> {
     } catch (error) {
       print(error);
     }
+  }
+
+  @override
+  void dispose() {
+    _authInstance.signOut();
+    super.dispose();
   }
 
   @override
@@ -147,7 +153,7 @@ class _InfoScreenState extends State<InfoScreen> {
           ),
         ],
       ),
-      floatingActionButton: expandableFab(context),
+      floatingActionButton: expandableFab(context, widget.key),
     );
   }
 }

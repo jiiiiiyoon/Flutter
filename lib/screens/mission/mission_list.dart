@@ -6,7 +6,6 @@ import 'package:shallwe_app/custom_widget/custom_dialog.dart';
 import 'package:shallwe_app/model/mission.dart';
 import 'package:shallwe_app/screens/login/sing_in.dart';
 import '../../data/firebase_data_control.dart';
-// import '../../custom_widget/list_tile.dart';
 import '../../size.dart';
 import '../../provider/point_provider.dart';
 
@@ -30,9 +29,9 @@ class _MissionListState extends State<MissionList> {
       itemBuilder: (context, idx) {
         Mission mission = currentUser.missions[idx];
         return GestureDetector(
-          child: listTile(context, idx, mission),
+          child: _listTile(context, idx, mission),
           onTap: () {
-            print(mission.info);
+            print(mission.info); //클릭시 미션 정보 표시
             showDialog(
               barrierDismissible: false,
               context: context,
@@ -46,7 +45,7 @@ class _MissionListState extends State<MissionList> {
     );
   }
 
-  Widget listTile(BuildContext context, int idx, Mission mission) {
+  Widget _listTile(BuildContext context, int idx, Mission mission) {
     return InkWell(
       child: Column(
         children: [
@@ -90,6 +89,7 @@ class _MissionListState extends State<MissionList> {
   }
 
   Widget _buildCheckBox(int idx) {
+    //체크박스 빌드
     return SizedBox(
       width: 50 * getScaleWidth(context),
       height: 50 * getScaleHeight(context),
@@ -99,14 +99,16 @@ class _MissionListState extends State<MissionList> {
         value: currentUser.missions[idx].weekCheck,
         onChanged: (bool? check) {
           setState(() {
-            currentUser.missions[idx].weekCheck = check!;
-            check ? _pointProvider.addPoint(5) : _pointProvider.subPoint(5);
-            print(currentUser.missions[idx].weekCheck);
-            print(currentUser.pointSum);
-            updateUserData(_authInstance, idx, check, currentUser.pointSum);
-            //유저 점수 및 미션 클리어 파이어베이스 업데이트
-            //
-            //
+            if (_authInstance.currentUser != null) {
+              //로그인 상태 체크
+              currentUser.missions[idx].weekCheck = check!;
+              check ? _pointProvider.addPoint(5) : _pointProvider.subPoint(5);
+              updateUserData(_authInstance, idx, check,
+                  currentUser.pointSum); //유저, 랭킹 점수업데이트
+            } else {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text('로그인상태를 확인해주세요.')));
+            }
           });
         },
       ),
