@@ -29,6 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('회원가입'),
+          elevation: 0,
         ),
         body: SingleChildScrollView(child: _signUpBody()),
       ),
@@ -66,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ValueKey('pw'),
                   TextInputType.visiblePassword,
                   (value) {
-                    return (value!.isEmpty || value.length < 6)
+                    return (value!.isEmpty || value.length < 7)
                         ? '올바른 비밀번호를 입력해주세요'
                         : null;
                   },
