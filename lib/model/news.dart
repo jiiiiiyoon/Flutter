@@ -35,11 +35,6 @@ class News {
   });
 
   factory News.fromDocument(Map doc) {
-    print(doc['date'] +
-        doc['url'] +
-        doc['title'] +
-        doc['publishing_company'] +
-        doc['reporter']);
     return News(
       date: doc['date'],
       url: doc['url'],

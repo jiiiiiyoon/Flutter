@@ -1,13 +1,16 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shallwe_app/config/color_palette.dart';
 import 'package:shallwe_app/custom_widget/expandable_fab.dart';
 import 'package:shallwe_app/data/firebase_data_control.dart';
+import 'package:shallwe_app/data/get_location.dart';
+import 'package:shallwe_app/data/get_weather_svg.dart';
+import 'package:shallwe_app/data/network.dart';
 import 'package:shallwe_app/model/news.dart';
+import 'package:shallwe_app/model/weather.dart';
 import 'package:shallwe_app/size.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class InfoScreen extends StatefulWidget {
   InfoScreen({Key? key}) : super(key: key);
@@ -17,20 +20,49 @@ class InfoScreen extends StatefulWidget {
 }
 
 class _InfoScreenState extends State<InfoScreen> {
-  final _authInstance = FirebaseAuth.instance;
   dynamic loggedUser;
   late NewsList news;
   PageController _controller =
       PageController(initialPage: 1, viewportFraction: 0.8);
+  late TooltipBehavior _tooltipBehavior;
 
-  late Future _getQuiz;
+  late Future _getNews;
   void launchURL(url) async {
     await launch(url, forceWebView: true, forceSafariVC: true);
   }
 
+  Future<List> getCurrentWeather() async {
+    final APIKEY = dotenv.env['WEATHER_KEY'];
+    MyLocation myLocation = MyLocation();
+    await myLocation.getMyCurrentLocation();
+    print(
+        'Latitude: ${myLocation.myLatitude}    Longitude: ${myLocation.myLongitude}');
+    Network network = Network(
+        'https://api.openweathermap.org/data/2.5/weather?lat=${myLocation.myLatitude}&lon=${myLocation.myLongitude}&appid=$APIKEY&units=metric');
+    var weatherData = await network.getJsonData();
+
+    return await updateData(weatherData);
+  }
+
+  List updateData(dynamic weatherData) {
+    int temp = 0;
+    String cityName = '';
+    Widget w_icon;
+    double temp2 = weatherData['main']['temp'];
+    int condition = weatherData['weather'][0]['id'];
+    temp = temp2.round(); //round는 반올림, int반환 //toInt()를 써도 결과는 같음
+    cityName = weatherData['name'];
+    w_icon = getWeatherIcon(condition);
+    print(cityName + '    ' + '$temp');
+    // w_icon = model.getWeatherIcon(condition);
+    return [cityName, temp, w_icon];
+  }
+
   @override
   void initState() {
-    _getQuiz = getNewsData();
+    _getNews = getNewsData();
+    _tooltipBehavior = TooltipBehavior(enable: true);
+    getCurrentWeather();
     super.initState();
   }
 
@@ -40,6 +72,7 @@ class _InfoScreenState extends State<InfoScreen> {
       appBar: AppBar(title: Text('main info page')),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               height: 50 * getScaleHeight(context),
@@ -67,20 +100,13 @@ class _InfoScreenState extends State<InfoScreen> {
             SizedBox(
               height: 21 * getScaleHeight(context),
             ),
-            Row(
-              children: [
-                Container(
-                  height: 500 * getScaleHeight(context),
-                  width: 40 * getScaleWidth(context),
-                ),
-                Container(
-                  width: 670 * getScaleWidth(context),
-                  height: 500 * getScaleHeight(context),
-                  decoration: BoxDecoration(
-                    color: const Color(0xfff1f1f5),
-                  ),
-                ),
-              ],
+            Container(
+              width: 670 * getScaleWidth(context),
+              height: 500 * getScaleHeight(context),
+              decoration: BoxDecoration(
+                color: const Color(0xfff1f1f5),
+              ),
+              child: _drawChart(),
             ),
             SizedBox(
               height: 40 * getScaleHeight(context),
@@ -92,11 +118,11 @@ class _InfoScreenState extends State<InfoScreen> {
               height: 168 * getScaleWidth(context),
               // 리스트뷰 추가
               child: FutureBuilder(
-                future: _getQuiz,
+                future: _getNews,
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
                   if (snapshot.hasData == false) {
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   }
                   //error가 발생하게 될 경우 반환하게 되는 부분
                   else if (snapshot.hasError) {
@@ -128,22 +154,101 @@ class _InfoScreenState extends State<InfoScreen> {
             SizedBox(
               height: 62 * getScaleHeight(context),
             ),
-            Row(
-              children: [
-                Container(
-                  width: 75 * getScaleWidth(context),
-                ),
-                Container(
-                  height: 250 * getScaleHeight(context),
-                  width: 300 * getScaleWidth(context),
-                  color: Palette.mintColor,
-                ),
-              ],
-            ),
+            _buildCurrentWeather(context),
           ],
         ),
       ),
       floatingActionButton: expandableFab(context, widget.key),
+    );
+  }
+
+  Row _buildCurrentWeather(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 75 * getScaleWidth(context),
+        ),
+        FutureBuilder(
+          future: getCurrentWeather(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.hasData) {
+              return Container(
+                height: 250 * getScaleHeight(context),
+                width: 300 * getScaleWidth(context),
+                padding: EdgeInsets.only(right: 20 * getScaleWidth(context)),
+                color: Palette.TextFieldColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    snapshot.data[2],
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      // crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          snapshot.data[0],
+                          style: TextStyle(
+                              color: const Color(0xff000000),
+                              fontWeight: FontWeight.w700,
+                              fontFamily: "NotoSansCJKkr",
+                              fontStyle: FontStyle.normal,
+                              fontSize: 48.0 * getScaleHeight(context)),
+                        ),
+                        Text(
+                          snapshot.data[1].toString() + '°C',
+                          style: TextStyle(
+                              color: const Color(0xff000000),
+                              fontWeight: FontWeight.w700,
+                              fontFamily: "NotoSansCJKkr",
+                              fontStyle: FontStyle.normal,
+                              fontSize: 48.0 * getScaleHeight(context)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }
+            return CircularProgressIndicator();
+          },
+        ),
+      ],
+    );
+  }
+
+  SfCartesianChart _drawChart() {
+    return SfCartesianChart(
+      primaryXAxis: CategoryAxis(),
+      legend: Legend(isVisible: false),
+      tooltipBehavior: _tooltipBehavior,
+      series: <LineSeries<WeatherData, String>>[
+        LineSeries(
+          dataSource: <WeatherData>[
+            WeatherData('Jan', 35, Colors.amber),
+            WeatherData('Feb', 28, Colors.amber),
+            WeatherData('Mar', 34, Colors.blue),
+            WeatherData('Apr', 32, Colors.blue),
+            WeatherData('May', 40, Colors.brown)
+          ],
+          xValueMapper: (WeatherData weather, _) => weather.day,
+          yValueMapper: (WeatherData weather, _) => weather.sales,
+          pointColorMapper: (WeatherData weather, _) => weather.lineColor,
+          dataLabelSettings: DataLabelSettings(isVisible: true),
+        ),
+        LineSeries(
+          dataSource: <WeatherData>[
+            WeatherData('Jan', 10, Colors.amber),
+            WeatherData('Feb', 14, Colors.amber),
+            WeatherData('Mar', 16, Colors.blue),
+            WeatherData('Apr', 18, Colors.blue),
+            WeatherData('May', 20, Colors.brown)
+          ],
+          xValueMapper: (WeatherData weather, _) => weather.day,
+          yValueMapper: (WeatherData weather, _) => weather.sales,
+          pointColorMapper: (WeatherData weather, _) => weather.lineColor,
+          dataLabelSettings: DataLabelSettings(isVisible: true),
+        ),
+      ],
     );
   }
 

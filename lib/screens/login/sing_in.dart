@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:shallwe_app/screens/info/info.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../size.dart';
@@ -24,6 +25,12 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formkey = GlobalKey<FormState>();
   late String _userEmail;
   late String _userPassword;
+
+  @override
+  void initState() {
+    _checkPermission();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -286,5 +293,28 @@ class _SignInScreenState extends State<SignInScreen> {
         SnackBar(content: Text('동일한 이메일로 가입된 계정이 있습니다.')),
       );
     }
+  }
+}
+
+_checkPermission() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    return Future.error('Location services are disabled');
+  }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      return Future.error('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.');
   }
 }
