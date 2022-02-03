@@ -31,7 +31,7 @@ class _SignInScreenState extends State<SignInScreen> {
     super.dispose();
   }
 
-  void _tryValidation() async {
+  _tryValidation() async {
     final isValid = _formkey.currentState!.validate();
     print(isValid);
 
@@ -39,7 +39,9 @@ class _SignInScreenState extends State<SignInScreen> {
       _formkey.currentState!.save();
       print(_userEmail);
       print(_userPassword);
+      return true;
     }
+    return false;
   }
 
   @override
@@ -51,6 +53,7 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('ShellWe?', style: TextStyle(color: Colors.white)),
+          elevation: 0,
         ),
         body: SingleChildScrollView(child: _SignInBody()),
       ),
@@ -115,7 +118,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ValueKey('pw'),
                       TextInputType.visiblePassword,
                       (value) {
-                        return (value!.isEmpty || value.length < 6)
+                        return (value!.isEmpty || value.length < 7)
                             ? '7자 이상 입력하세요'
                             : null;
                       },
@@ -138,11 +141,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   customElevatedButton(
                     () async {
                       print('signin buttom pressed');
-                      _tryValidation();
-
-                      //firebase 로그인
-
-                      await signIn();
+                      if (_tryValidation()) {
+                        await signIn();
+                      }
+                      FocusScope.of(context).unfocus();
                     },
                     '로그인',
                     context,

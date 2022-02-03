@@ -27,7 +27,7 @@ Widget CustomTextField(
       TextFormField(
         key: key,
         keyboardType: textType,
-        autovalidateMode: AutovalidateMode.always,
+        // autovalidateMode: AutovalidateMode.always,
         obscureText: textType.hashCode == TextInputType.visiblePassword.hashCode
             ? true
             : false,
