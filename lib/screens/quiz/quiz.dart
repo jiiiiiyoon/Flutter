@@ -369,15 +369,30 @@ class _QuizScreenState extends State<QuizScreen> {
                   SizedBox(
                     height: 37 * getScaleHeight(context),
                   ),
-                  Text(
-                    resultStr,
-                    style: const TextStyle(
-                        color: Palette.mintColor,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "SegoeUI",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 27.0),
-                    textAlign: TextAlign.center,
+                  Container(
+                    width: 268 * getScaleWidth(context),
+                    height: 74 * getScaleHeight(context),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        for (int n = 0; n < 5; ++n)
+                          resultStr[n].toString() == 'O'
+                              ? Container(
+                                  width: 50 * getScaleWidth(context),
+                                  height: 50 * getScaleHeight(context),
+                                  child: Image.asset(
+                                    'assets/O.png',
+                                  ),
+                                )
+                              : Container(
+                                  width: 50 * getScaleWidth(context),
+                                  height: 50 * getScaleHeight(context),
+                                  child: Image.asset(
+                                    'assets/X.png',
+                                  ),
+                                )
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 36.5 * getScaleHeight(context),
