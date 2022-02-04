@@ -59,7 +59,7 @@ class _CustomDialogState extends State<CustomDialog> {
               style: TextStyle(
                 color: const Color(0xff191919),
                 fontWeight: FontWeight.w700,
-                fontFamily: "NotoSansCJKkr",
+                fontFamily: "IM_Hyemin",
                 fontStyle: FontStyle.normal,
                 fontSize: 36 * getScaleHeight(context),
               ),
@@ -73,7 +73,7 @@ class _CustomDialogState extends State<CustomDialog> {
                 style: TextStyle(
                   color: const Color(0xff343435),
                   fontWeight: FontWeight.w400,
-                  fontFamily: "NotoSans",
+                  fontFamily: "IM_Hyemin",
                   fontStyle: FontStyle.normal,
                   fontSize: 30 * getScaleHeight(context),
                 ),
@@ -99,7 +99,7 @@ class _CustomDialogState extends State<CustomDialog> {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontFamily: "NotoSans",
+                    fontFamily: "IM_Hyemin",
                     fontStyle: FontStyle.normal,
                     fontSize: 15.0,
                   ),

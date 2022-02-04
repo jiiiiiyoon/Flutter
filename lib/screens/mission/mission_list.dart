@@ -81,7 +81,6 @@ class _MissionListState extends State<MissionList> {
       style: TextStyle(
         color: const Color(0xff767676),
         fontWeight: FontWeight.w700,
-        fontFamily: "NotoSansCJKkr",
         fontStyle: FontStyle.normal,
         fontSize: 25 * getScaleWidth(context),
       ),
