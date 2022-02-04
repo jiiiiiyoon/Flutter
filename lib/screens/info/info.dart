@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shallwe_app/config/color_palette.dart';
@@ -23,10 +24,12 @@ class _InfoScreenState extends State<InfoScreen> {
   dynamic loggedUser;
   late NewsList news;
   PageController _controller =
-      PageController(initialPage: 1, viewportFraction: 0.8);
+      PageController(initialPage: 0, viewportFraction: 0.8);
+  int currentPage = 0;
   late TooltipBehavior _tooltipBehavior;
-
+  late Future _getTempe;
   late Future _getNews;
+
   void launchURL(url) async {
     await launch(url, forceWebView: true, forceSafariVC: true);
   }
@@ -60,9 +63,24 @@ class _InfoScreenState extends State<InfoScreen> {
 
   @override
   void initState() {
+    _getTempe = getTempeData();
     _getNews = getNewsData();
     _tooltipBehavior = TooltipBehavior(enable: true);
     getCurrentWeather();
+
+    // Timer.periodic(Duration(seconds: 5), (Timer timer) {
+    //   if (currentPage < 10) {
+    //     currentPage++;
+    //   } else {
+    //     currentPage = 0;
+    //   }
+
+    //   _controller.animateToPage(
+    //     currentPage,
+    //     duration: Duration(milliseconds: 500),
+    //     curve: Curves.ease,
+    //   );
+    // });
     super.initState();
   }
 
@@ -187,6 +205,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       children: [
                         Text(
                           snapshot.data[0],
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               color: const Color(0xff000000),
                               fontWeight: FontWeight.w700,
@@ -196,6 +215,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         ),
                         Text(
                           snapshot.data[1].toString() + '°C',
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               color: const Color(0xff000000),
                               fontWeight: FontWeight.w700,
@@ -216,39 +236,44 @@ class _InfoScreenState extends State<InfoScreen> {
     );
   }
 
-  SfCartesianChart _drawChart() {
-    return SfCartesianChart(
-      primaryXAxis: CategoryAxis(),
-      legend: Legend(isVisible: false),
-      tooltipBehavior: _tooltipBehavior,
-      series: <LineSeries<WeatherData, String>>[
-        LineSeries(
-          dataSource: <WeatherData>[
-            WeatherData('Jan', 35, Colors.amber),
-            WeatherData('Feb', 28, Colors.amber),
-            WeatherData('Mar', 34, Colors.blue),
-            WeatherData('Apr', 32, Colors.blue),
-            WeatherData('May', 40, Colors.brown)
-          ],
-          xValueMapper: (WeatherData weather, _) => weather.day,
-          yValueMapper: (WeatherData weather, _) => weather.sales,
-          pointColorMapper: (WeatherData weather, _) => weather.lineColor,
-          dataLabelSettings: DataLabelSettings(isVisible: true),
-        ),
-        LineSeries(
-          dataSource: <WeatherData>[
-            WeatherData('Jan', 10, Colors.amber),
-            WeatherData('Feb', 14, Colors.amber),
-            WeatherData('Mar', 16, Colors.blue),
-            WeatherData('Apr', 18, Colors.blue),
-            WeatherData('May', 20, Colors.brown)
-          ],
-          xValueMapper: (WeatherData weather, _) => weather.day,
-          yValueMapper: (WeatherData weather, _) => weather.sales,
-          pointColorMapper: (WeatherData weather, _) => weather.lineColor,
-          dataLabelSettings: DataLabelSettings(isVisible: true),
-        ),
-      ],
+  Widget _drawChart() {
+    return FutureBuilder(
+      future: _getTempe,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (snapshot.hasData) {
+          WeatherData temper = snapshot.data;
+          return SfCartesianChart(
+            primaryXAxis: CategoryAxis(),
+            legend: Legend(isVisible: true, position: LegendPosition.bottom),
+            tooltipBehavior: _tooltipBehavior,
+            series: <LineSeries<WeatherDay, String>>[
+              LineSeries(
+                  name: temper.weatherData.first.year,
+                  dataSource: temper.weatherData.first.yearData,
+                  xValueMapper: (WeatherDay weather, _) => weather.day,
+                  yValueMapper: (WeatherDay weather, _) => weather.temper,
+                  markerSettings: MarkerSettings(
+                    isVisible: true,
+                    shape: DataMarkerType.circle,
+                  )
+                  // dataLabelSettings: DataLabelSettings(isVisible: true),
+                  ),
+              LineSeries(
+                  name: temper.weatherData.last.year,
+                  dataSource: temper.weatherData.last.yearData,
+                  xValueMapper: (WeatherDay weather, _) => weather.day,
+                  yValueMapper: (WeatherDay weather, _) => weather.temper,
+                  markerSettings: MarkerSettings(
+                    isVisible: true,
+                    shape: DataMarkerType.circle,
+                  )
+                  // dataLabelSettings: DataLabelSettings(isVisible: true),
+                  ),
+            ],
+          );
+        }
+        return Center(child: CircularProgressIndicator());
+      },
     );
   }
 
