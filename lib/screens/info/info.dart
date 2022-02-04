@@ -26,7 +26,7 @@ class _InfoScreenState extends State<InfoScreen> {
   PageController _controller =
       PageController(initialPage: 0, viewportFraction: 0.8);
   int currentPage = 0;
-
+  late Timer _timer;
   late TooltipBehavior _tooltipBehavior;
   late Future _getTempe;
   late Future _getNews;
@@ -57,8 +57,6 @@ class _InfoScreenState extends State<InfoScreen> {
     temp = temp2.round(); //round는 반올림, int반환 //toInt()를 써도 결과는 같음
     cityName = weatherData['name'];
     w_icon = getWeatherIcon(condition);
-    print(cityName + '    ' + '$temp');
-    // w_icon = model.getWeatherIcon(condition);
     return [cityName, temp, w_icon];
   }
 
@@ -69,7 +67,7 @@ class _InfoScreenState extends State<InfoScreen> {
     _tooltipBehavior = TooltipBehavior(enable: true);
     getCurrentWeather();
 
-    Timer.periodic(Duration(seconds: 5), (Timer timer) {
+    _timer = Timer.periodic(Duration(seconds: 5), (Timer timer) {
       if (currentPage < 10) {
         currentPage++;
       } else {
@@ -85,11 +83,11 @@ class _InfoScreenState extends State<InfoScreen> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   _timer.cancel();
-  // }
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
