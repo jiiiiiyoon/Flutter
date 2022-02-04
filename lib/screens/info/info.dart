@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shallwe_app/config/color_palette.dart';
@@ -21,6 +22,7 @@ class InfoScreen extends StatefulWidget {
 }
 
 class _InfoScreenState extends State<InfoScreen> {
+  final _authInstance = FirebaseAuth.instance;
   dynamic loggedUser;
   late NewsList news;
   PageController _controller =
@@ -92,8 +94,20 @@ class _InfoScreenState extends State<InfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: Text('티끌', style: TextStyle(fontFamily: 'IM_Hyemin'))),
+      appBar: AppBar(
+        title: Text(
+          '티끌',
+          style: TextStyle(fontFamily: 'IM_Hyemin'),
+        ),
+        actions: <Widget>[
+          IconButton(
+              onPressed: () {
+                _authInstance.signOut();
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.logout_outlined))
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
