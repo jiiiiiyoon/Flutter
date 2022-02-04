@@ -26,6 +26,7 @@ class _InfoScreenState extends State<InfoScreen> {
   PageController _controller =
       PageController(initialPage: 0, viewportFraction: 0.8);
   int currentPage = 0;
+
   late TooltipBehavior _tooltipBehavior;
   late Future _getTempe;
   late Future _getNews;
@@ -68,21 +69,27 @@ class _InfoScreenState extends State<InfoScreen> {
     _tooltipBehavior = TooltipBehavior(enable: true);
     getCurrentWeather();
 
-    // Timer.periodic(Duration(seconds: 5), (Timer timer) {
-    //   if (currentPage < 10) {
-    //     currentPage++;
-    //   } else {
-    //     currentPage = 0;
-    //   }
+    Timer.periodic(Duration(seconds: 5), (Timer timer) {
+      if (currentPage < 10) {
+        currentPage++;
+      } else {
+        currentPage = 0;
+      }
 
-    //   _controller.animateToPage(
-    //     currentPage,
-    //     duration: Duration(milliseconds: 500),
-    //     curve: Curves.ease,
-    //   );
-    // });
+      _controller.animateToPage(
+        currentPage,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.ease,
+      );
+    });
     super.initState();
   }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   _timer.cancel();
+  // }
 
   @override
   Widget build(BuildContext context) {
