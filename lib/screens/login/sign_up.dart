@@ -56,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         : null;
                   },
                   (value) {
-                    _userEmail = value!.trim();
+                    _userEmail = value!;
                   },
                   Icons.email_rounded,
                   '이메일',
@@ -151,7 +151,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   } catch (e) {
                     print('error: ${e}');
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('이미 존재하는 계정입니다.')),
+                      SnackBar(content: Text('잘못된 이메일 형식입니다.')),
                     );
                   }
                 },

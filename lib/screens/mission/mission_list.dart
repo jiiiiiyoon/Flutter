@@ -101,7 +101,9 @@ class _MissionListState extends State<MissionList> {
             if (_authInstance.currentUser != null) {
               //로그인 상태 체크
               currentUser.missions[idx].weekCheck = check!;
-              check ? _pointProvider.addPoint(5) : _pointProvider.subPoint(5);
+              check
+                  ? _pointProvider.addPoint(currentUser.missions[idx].point)
+                  : _pointProvider.subPoint(currentUser.missions[idx].point);
               updateUserData(_authInstance, idx, check,
                   currentUser.pointSum); //유저, 랭킹 점수업데이트
             } else {
