@@ -50,7 +50,7 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Quiz",
+        title: Text('퀴즈',
             style: const TextStyle(
               color: const Color(0xff191919),
               fontWeight: FontWeight.w700,

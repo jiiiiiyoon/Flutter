@@ -254,27 +254,41 @@ class _InfoScreenState extends State<InfoScreen> {
             tooltipBehavior: _tooltipBehavior,
             series: <LineSeries<WeatherDay, String>>[
               LineSeries(
-                  name: temper.weatherData.last.year,
-                  dataSource: temper.weatherData.last.yearData,
-                  xValueMapper: (WeatherDay weather, _) => weather.day,
-                  yValueMapper: (WeatherDay weather, _) => weather.temper,
-                  markerSettings: MarkerSettings(
-                    isVisible: true,
-                    shape: DataMarkerType.circle,
-                  )
-                  // dataLabelSettings: DataLabelSettings(isVisible: true),
-                  ),
+                name: temper.weatherData[0].year,
+                dataSource: temper.weatherData[0].yearData,
+                xValueMapper: (WeatherDay weather, _) => weather.day,
+                yValueMapper: (WeatherDay weather, _) => weather.temper,
+                markerSettings: MarkerSettings(
+                  isVisible: true,
+                  shape: DataMarkerType.circle,
+                ),
+                color: Colors.blue[300],
+                // dataLabelSettings: DataLabelSettings(isVisible: true),
+              ),
               LineSeries(
-                  name: temper.weatherData.first.year,
-                  dataSource: temper.weatherData.first.yearData,
-                  xValueMapper: (WeatherDay weather, _) => weather.day,
-                  yValueMapper: (WeatherDay weather, _) => weather.temper,
-                  markerSettings: MarkerSettings(
-                    isVisible: true,
-                    shape: DataMarkerType.circle,
-                  )
-                  // dataLabelSettings: DataLabelSettings(isVisible: true),
-                  ),
+                name: temper.weatherData[1].year,
+                dataSource: temper.weatherData[1].yearData,
+                xValueMapper: (WeatherDay weather, _) => weather.day,
+                yValueMapper: (WeatherDay weather, _) => weather.temper,
+                markerSettings: MarkerSettings(
+                  isVisible: true,
+                  shape: DataMarkerType.circle,
+                ),
+                color: Colors.red[300],
+                // dataLabelSettings: DataLabelSettings(isVisible: true),
+              ),
+              LineSeries(
+                name: temper.weatherData[2].year,
+                dataSource: temper.weatherData[2].yearData,
+                xValueMapper: (WeatherDay weather, _) => weather.day,
+                yValueMapper: (WeatherDay weather, _) => weather.temper,
+                markerSettings: MarkerSettings(
+                  isVisible: true,
+                  shape: DataMarkerType.circle,
+                ),
+                color: Colors.purple[300],
+                // dataLabelSettings: DataLabelSettings(isVisible: true),
+              ),
             ],
           );
         }
