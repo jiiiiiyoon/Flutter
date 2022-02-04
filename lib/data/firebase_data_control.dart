@@ -69,6 +69,15 @@ updateUserData(
       .update({'${_authInstance.currentUser!.uid}.point_sum': userPoint});
 }
 
+updateUserPoint(FirebaseAuth _authInstance, int userPoint) async {
+  await userRef.doc(_authInstance.currentUser!.uid).update({
+    'point_sum': userPoint,
+  });
+  await rankRef
+      .doc('rank')
+      .update({'${_authInstance.currentUser!.uid}.point_sum': userPoint});
+}
+
 //===================================
 getQuizData() async {
   QuerySnapshot snapshots = await quizRef.get();
