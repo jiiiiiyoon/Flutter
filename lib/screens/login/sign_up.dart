@@ -116,7 +116,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return (value.length < 10) ? '이메일 주소를 입력해주세요' : null;
                   },
                   (value) {
-                    _userEmail = value!;
+                    _userPhNum = value!;
                   },
                   Icons.phone,
                   '휴대전화',
@@ -134,6 +134,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 () async {
                   //firebase 가입
                   try {
+                    print(_userEmail);
                     final newUser =
                         await _authInstance.createUserWithEmailAndPassword(
                       email: _userEmail.trim(), //이메일 형식 에러가 나서 trim으로 문자열 정리
