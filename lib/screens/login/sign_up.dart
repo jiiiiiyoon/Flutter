@@ -56,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         : null;
                   },
                   (value) {
-                    _userEmail = value!;
+                    _userEmail = value!.trim();
                   },
                   Icons.email_rounded,
                   '이메일',

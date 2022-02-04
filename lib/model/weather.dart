@@ -3,14 +3,20 @@ import 'package:flutter/material.dart';
 
 class WeatherData {
   WeatherData({required this.weatherData});
-  final List<WeatherYear> weatherData;
+  final List weatherData;
 
   factory WeatherData.fromDocument(DocumentSnapshot doc) {
     Map getDocs = doc.data() as Map;
-    List<WeatherYear> yearList = [];
+    List yearList = ['', '', ''];
 
     getDocs.forEach((key, value) {
-      yearList.add(WeatherYear.fromDocument(key, value));
+      if (key == '2000') {
+        yearList[0] = WeatherYear.fromDocument(key, value);
+      } else if (key == 'prediction') {
+        yearList[2] = WeatherYear.fromDocument('예측', value);
+      } else {
+        yearList[1] = WeatherYear.fromDocument(key, value);
+      }
     });
 
     return WeatherData(weatherData: yearList);

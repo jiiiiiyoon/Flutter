@@ -42,7 +42,7 @@ class _MissionState extends State<Mission> with SingleTickerProviderStateMixin {
         ),
       ],
       child: Scaffold(
-        appBar: AppBar(title: Text('Mission')),
+        appBar: AppBar(title: Text('미션')),
         body: Padding(
           padding: EdgeInsets.fromLTRB(43 * getScaleWidth(context),
               75 * getScaleHeight(context), 43 * getScaleWidth(context), 0),
