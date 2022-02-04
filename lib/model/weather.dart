@@ -10,8 +10,6 @@ class WeatherData {
     List<WeatherYear> yearList = [];
 
     getDocs.forEach((key, value) {
-      print(key);
-      print(value);
       yearList.add(WeatherYear.fromDocument(key, value));
     });
 
