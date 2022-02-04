@@ -140,8 +140,11 @@ class _QuizScreenState extends State<QuizScreen> {
                                       ),
                                       Container(
                                         child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Container(
+                                              alignment: Alignment.center,
                                               width:
                                                   200 * getScaleWidth(context),
                                               height:
@@ -164,17 +167,18 @@ class _QuizScreenState extends State<QuizScreen> {
                                                   fontStyle: FontStyle.normal,
                                                   fontSize: 17.0,
                                                 ),
+                                                textAlign: TextAlign.center,
                                               ),
                                             ),
                                             //수정할 부분
                                             Text(
                                               "5 개",
                                               style: const TextStyle(
-                                                  color:
-                                                      const Color(0xff191919),
-                                                  fontWeight: FontWeight.w700,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 17.0),
+                                                color: const Color(0xff191919),
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: 17.0,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -187,6 +191,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                         child: Column(
                                           children: [
                                             Container(
+                                              alignment: Alignment.center,
                                               width:
                                                   200 * getScaleWidth(context),
                                               height:
@@ -209,6 +214,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                                   fontStyle: FontStyle.normal,
                                                   fontSize: 17.0,
                                                 ),
+                                                textAlign: TextAlign.center,
                                               ),
                                             ),
                                             Text(
@@ -230,7 +236,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                   ),
                                   Container(
                                     width: 400 * getScaleWidth(context),
-                                    height: 92 * getScaleHeight(context),
+                                    height: 150 * getScaleHeight(context),
                                     child: Text(
                                       quiz.quizList[currentQuizList[index]]
                                           .question,
@@ -242,7 +248,7 @@ class _QuizScreenState extends State<QuizScreen> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 120 * getScaleHeight(context),
+                                    height: 100 * getScaleHeight(context),
                                   ),
                                   for (int i = 0;
                                       i <
