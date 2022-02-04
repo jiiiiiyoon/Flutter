@@ -10,7 +10,7 @@ Widget customElevatedButton(
         style: TextStyle(
           color: const Color(0xffffffff),
           fontWeight: FontWeight.w700,
-          fontFamily: "NotoSansCJKkr",
+          fontFamily: 'IM_Hyemin',
           fontStyle: FontStyle.normal,
           fontSize: 32.0 * getScaleHeight(context),
         )),

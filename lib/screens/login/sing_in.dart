@@ -55,7 +55,7 @@ class _SignInScreenState extends State<SignInScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('ShellWe?', style: TextStyle(color: Colors.white)),
+          title: Text('티끌', style: TextStyle(color: Colors.white)),
           elevation: 0,
         ),
         body: SingleChildScrollView(child: _SignInBody()),
@@ -78,7 +78,6 @@ class _SignInScreenState extends State<SignInScreen> {
             style: TextStyle(
               color: const Color(0xff000000),
               fontWeight: FontWeight.w700,
-              fontFamily: "NotoSansCJKkr",
               fontStyle: FontStyle.normal,
               fontSize: 56.0 * getScaleWidth(context),
             ),

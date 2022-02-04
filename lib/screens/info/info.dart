@@ -92,7 +92,8 @@ class _InfoScreenState extends State<InfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('main info page')),
+      appBar:
+          AppBar(title: Text('티끌', style: TextStyle(fontFamily: 'IM_Hyemin'))),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +114,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       style: const TextStyle(
                           color: const Color(0xff000000),
                           fontWeight: FontWeight.w700,
-                          fontFamily: "NotoSansCJKkr",
+                          fontFamily: "IM_Hyemin",
                           fontStyle: FontStyle.normal,
                           fontSize: 27),
                       textAlign: TextAlign.left),
@@ -153,7 +154,7 @@ class _InfoScreenState extends State<InfoScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         'Error: ${snapshot.error}',
-                        style: TextStyle(fontSize: 15),
+                        style: TextStyle(fontSize: 15, fontFamily: 'IM_Hyemin'),
                       ),
                     );
                   }
@@ -214,8 +215,6 @@ class _InfoScreenState extends State<InfoScreen> {
                           style: TextStyle(
                               color: const Color(0xff000000),
                               fontWeight: FontWeight.w700,
-                              fontFamily: "NotoSansCJKkr",
-                              fontStyle: FontStyle.normal,
                               fontSize: 48.0 * getScaleHeight(context)),
                         ),
                         Text(
@@ -224,8 +223,6 @@ class _InfoScreenState extends State<InfoScreen> {
                           style: TextStyle(
                               color: const Color(0xff000000),
                               fontWeight: FontWeight.w700,
-                              fontFamily: "NotoSansCJKkr",
-                              fontStyle: FontStyle.normal,
                               fontSize: 48.0 * getScaleHeight(context)),
                         ),
                       ],
@@ -253,8 +250,8 @@ class _InfoScreenState extends State<InfoScreen> {
             tooltipBehavior: _tooltipBehavior,
             series: <LineSeries<WeatherDay, String>>[
               LineSeries(
-                  name: temper.weatherData.first.year,
-                  dataSource: temper.weatherData.first.yearData,
+                  name: temper.weatherData.last.year,
+                  dataSource: temper.weatherData.last.yearData,
                   xValueMapper: (WeatherDay weather, _) => weather.day,
                   yValueMapper: (WeatherDay weather, _) => weather.temper,
                   markerSettings: MarkerSettings(
@@ -264,8 +261,8 @@ class _InfoScreenState extends State<InfoScreen> {
                   // dataLabelSettings: DataLabelSettings(isVisible: true),
                   ),
               LineSeries(
-                  name: temper.weatherData.last.year,
-                  dataSource: temper.weatherData.last.yearData,
+                  name: temper.weatherData.first.year,
+                  dataSource: temper.weatherData.first.yearData,
                   xValueMapper: (WeatherDay weather, _) => weather.day,
                   yValueMapper: (WeatherDay weather, _) => weather.temper,
                   markerSettings: MarkerSettings(

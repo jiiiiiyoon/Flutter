@@ -139,7 +139,6 @@ class _MissionState extends State<Mission> with SingleTickerProviderStateMixin {
           style: TextStyle(
               color: const Color(0xff000000),
               fontWeight: FontWeight.w700,
-              fontFamily: "NotoSansCJKkr",
               fontStyle: FontStyle.normal,
               fontSize: 32.0 * getScaleHeight(context)),
         ),
@@ -156,7 +155,6 @@ class _MissionState extends State<Mission> with SingleTickerProviderStateMixin {
                     style: TextStyle(
                       color: const Color(0xff000000),
                       fontWeight: FontWeight.w700,
-                      fontFamily: "NotoSansCJKkr",
                       fontStyle: FontStyle.normal,
                       fontSize: 56.0 * getScaleHeight(context),
                     ),
@@ -169,7 +167,6 @@ class _MissionState extends State<Mission> with SingleTickerProviderStateMixin {
               style: TextStyle(
                 color: const Color(0xff000000),
                 fontWeight: FontWeight.w700,
-                fontFamily: "NotoSansCJKkr",
                 fontStyle: FontStyle.normal,
                 fontSize: 32.0 * getScaleHeight(context),
               ),

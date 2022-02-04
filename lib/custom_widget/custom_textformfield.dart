@@ -19,7 +19,7 @@ Widget CustomTextField(
         style: TextStyle(
           color: const Color(0xff000000),
           fontWeight: FontWeight.w400,
-          fontFamily: "NotoSansCJKkr",
+          fontFamily: "IM_Hyemin",
           fontStyle: FontStyle.normal,
           fontSize: 28.0 * getScaleHeight(context),
         ),
@@ -40,7 +40,7 @@ Widget CustomTextField(
           hintStyle: TextStyle(
             color: const Color(0xff999999),
             fontWeight: FontWeight.w400,
-            fontFamily: "NotoSansCJKkr",
+            fontFamily: "IM_Hyemin",
             fontStyle: FontStyle.normal,
             fontSize: 24.0 * getScaleHeight(context),
           ),

@@ -20,8 +20,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Shall We?',
+      title: '티끌',
       theme: ThemeData(
+        fontFamily: 'IM_Hyemin',
         primarySwatch: createMaterialColor(Palette.mintColor),
       ),
       home: const SignInScreen(),

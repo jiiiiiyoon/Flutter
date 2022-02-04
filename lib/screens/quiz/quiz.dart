@@ -54,7 +54,6 @@ class _QuizScreenState extends State<QuizScreen> {
             style: const TextStyle(
               color: const Color(0xff191919),
               fontWeight: FontWeight.w700,
-              fontFamily: "Roboto",
               fontStyle: FontStyle.normal,
             ),
             textAlign: TextAlign.left),
@@ -162,11 +161,9 @@ class _QuizScreenState extends State<QuizScreen> {
                                                   color:
                                                       const Color(0xff191919),
                                                   fontWeight: FontWeight.w700,
-                                                  fontFamily: "NotoSansCJKkr",
                                                   fontStyle: FontStyle.normal,
                                                   fontSize: 17.0,
                                                 ),
-                                                textAlign: TextAlign.center,
                                               ),
                                             ),
                                             //수정할 부분
@@ -176,10 +173,8 @@ class _QuizScreenState extends State<QuizScreen> {
                                                   color:
                                                       const Color(0xff191919),
                                                   fontWeight: FontWeight.w700,
-                                                  fontFamily: "NotoSansCJKkr",
                                                   fontStyle: FontStyle.normal,
                                                   fontSize: 17.0),
-                                              textAlign: TextAlign.left,
                                             ),
                                           ],
                                         ),
@@ -211,11 +206,9 @@ class _QuizScreenState extends State<QuizScreen> {
                                                   color:
                                                       const Color(0xff191919),
                                                   fontWeight: FontWeight.w700,
-                                                  fontFamily: "NotoSansCJKkr",
                                                   fontStyle: FontStyle.normal,
                                                   fontSize: 17.0,
                                                 ),
-                                                textAlign: TextAlign.center,
                                               ),
                                             ),
                                             Text(
@@ -223,11 +216,9 @@ class _QuizScreenState extends State<QuizScreen> {
                                               style: const TextStyle(
                                                 color: const Color(0xff191919),
                                                 fontWeight: FontWeight.w700,
-                                                fontFamily: "NotoSansCJKkr",
                                                 fontStyle: FontStyle.normal,
                                                 fontSize: 17.0,
                                               ),
-                                              textAlign: TextAlign.left,
                                             ),
                                           ],
                                         ),
@@ -246,10 +237,8 @@ class _QuizScreenState extends State<QuizScreen> {
                                       style: const TextStyle(
                                         color: const Color(0xff000000),
                                         fontWeight: FontWeight.w400,
-                                        fontFamily: "SegoeUI",
                                         fontStyle: FontStyle.normal,
                                       ),
-                                      textAlign: TextAlign.center,
                                     ),
                                   ),
                                   SizedBox(
@@ -404,7 +393,6 @@ class _QuizScreenState extends State<QuizScreen> {
                             style: const TextStyle(
                                 color: const Color(0xff191919),
                                 fontWeight: FontWeight.w700,
-                                fontFamily: "NotoSansCJKkr",
                                 fontStyle: FontStyle.normal,
                                 fontSize: 17.0),
                             text: "5"),
@@ -412,7 +400,6 @@ class _QuizScreenState extends State<QuizScreen> {
                             style: const TextStyle(
                                 color: const Color(0xff191919),
                                 fontWeight: FontWeight.w700,
-                                fontFamily: "NotoSansCJKkr",
                                 fontStyle: FontStyle.normal,
                                 fontSize: 12.0),
                             text: "문항 중 "),
@@ -420,7 +407,6 @@ class _QuizScreenState extends State<QuizScreen> {
                             style: const TextStyle(
                                 color: const Color(0xff191919),
                                 fontWeight: FontWeight.w700,
-                                fontFamily: "NotoSansCJKkr",
                                 fontStyle: FontStyle.normal,
                                 fontSize: 17.0),
                             text: score.toString()),
@@ -428,7 +414,6 @@ class _QuizScreenState extends State<QuizScreen> {
                             style: const TextStyle(
                                 color: const Color(0xff191919),
                                 fontWeight: FontWeight.w700,
-                                fontFamily: "NotoSansCJKkr",
                                 fontStyle: FontStyle.normal,
                                 fontSize: 12.0),
                             text: "문항을 맞추셨습니다.")
