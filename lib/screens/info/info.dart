@@ -135,46 +135,7 @@ class _InfoScreenState extends State<InfoScreen> {
             SizedBox(
               height: 40 * getScaleHeight(context),
             ),
-            Container(
-              // 수평적으로 대칭(symmetric)의 마진을 추가 -> 화면 위, 아래에 20픽세의 마진 삽입
-              margin: EdgeInsets.symmetric(vertical: 20.0),
-              // 컨테이너의 높이를 200으로 설정
-              height: 168 * getScaleWidth(context),
-              // 리스트뷰 추가
-              child: FutureBuilder(
-                future: _getNews,
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
-                  if (snapshot.hasData == false) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  //error가 발생하게 될 경우 반환하게 되는 부분
-                  else if (snapshot.hasError) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Error: ${snapshot.error}',
-                        style: TextStyle(fontSize: 15, fontFamily: 'IM_Hyemin'),
-                      ),
-                    );
-                  }
-                  // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
-                  else {
-                    news = snapshot.data;
-                    return PageView.builder(
-                      // 스크롤 방향 설정. 수평적으로 스크롤되도록 설정
-                      scrollDirection: Axis.horizontal,
-                      itemCount: news.newsList.length,
-                      controller: _controller,
-
-                      itemBuilder: (BuildContext context, int index) {
-                        return newsContainer(index);
-                      },
-                    );
-                  }
-                },
-              ),
-            ),
+            _buildNews(context),
             SizedBox(
               height: 62 * getScaleHeight(context),
             ),
@@ -183,6 +144,49 @@ class _InfoScreenState extends State<InfoScreen> {
         ),
       ),
       floatingActionButton: expandableFab(context, widget.key),
+    );
+  }
+
+  Container _buildNews(BuildContext context) {
+    return Container(
+      // 수평적으로 대칭(symmetric)의 마진을 추가 -> 화면 위, 아래에 20픽세의 마진 삽입
+      margin: EdgeInsets.symmetric(vertical: 20.0),
+      // 컨테이너의 높이를 200으로 설정
+      height: 168 * getScaleWidth(context),
+      // 리스트뷰 추가
+      child: FutureBuilder(
+        future: _getNews,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
+          if (snapshot.hasData == false) {
+            return Center(child: CircularProgressIndicator());
+          }
+          //error가 발생하게 될 경우 반환하게 되는 부분
+          else if (snapshot.hasError) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: TextStyle(fontSize: 15, fontFamily: 'IM_Hyemin'),
+              ),
+            );
+          }
+          // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
+          else {
+            news = snapshot.data;
+            return PageView.builder(
+              // 스크롤 방향 설정. 수평적으로 스크롤되도록 설정
+              scrollDirection: Axis.horizontal,
+              itemCount: news.newsList.length,
+              controller: _controller,
+
+              itemBuilder: (BuildContext context, int index) {
+                return newsContainer(index);
+              },
+            );
+          }
+        },
+      ),
     );
   }
 
