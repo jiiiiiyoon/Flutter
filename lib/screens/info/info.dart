@@ -306,7 +306,6 @@ class _InfoScreenState extends State<InfoScreen> {
                     style: const TextStyle(
                         color: const Color(0xff000000),
                         fontWeight: FontWeight.w700,
-                        fontFamily: "NotoSansCJKkr",
                         fontStyle: FontStyle.normal,
                         fontSize: 13.0),
                   ),
@@ -317,7 +316,6 @@ class _InfoScreenState extends State<InfoScreen> {
                   style: const TextStyle(
                       color: const Color(0xff000000),
                       fontWeight: FontWeight.w700,
-                      fontFamily: "NotoSansCJKkr",
                       fontStyle: FontStyle.normal,
                       fontSize: 17.0),
                 ),
@@ -340,7 +338,6 @@ class _InfoScreenState extends State<InfoScreen> {
                             style: const TextStyle(
                                 color: const Color(0xff000000),
                                 fontWeight: FontWeight.w400,
-                                fontFamily: "NotoSansCJKkr",
                                 fontStyle: FontStyle.normal,
                                 fontSize: 12.0),
                           ),
@@ -352,7 +349,6 @@ class _InfoScreenState extends State<InfoScreen> {
                       style: const TextStyle(
                         color: const Color(0xff000000),
                         fontWeight: FontWeight.w400,
-                        fontFamily: "NotoSansCJKkr",
                         fontStyle: FontStyle.normal,
                         fontSize: 12.0,
                       ),
