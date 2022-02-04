@@ -40,15 +40,11 @@ class _SignInScreenState extends State<SignInScreen> {
 
   _tryValidation() async {
     final isValid = _formkey.currentState!.validate();
-    print(isValid);
-
+    print('valid : ${isValid}');
     if (isValid) {
       _formkey.currentState!.save();
-      print(_userEmail);
-      print(_userPassword);
-      return true;
+      await signIn();
     }
-    return false;
   }
 
   @override
@@ -148,9 +144,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   customElevatedButton(
                     () async {
                       print('signin buttom pressed');
-                      if (_tryValidation()) {
-                        await signIn();
-                      }
+                      _tryValidation();
                       FocusScope.of(context).unfocus();
                     },
                     '로그인',
