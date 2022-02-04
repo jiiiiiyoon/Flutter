@@ -74,7 +74,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       654 * getScaleWidth(context)) /
                   2),
           child: Text(
-            '날씨\n관련 문구\n넣을 곳',
+            '티끌 :\n지구를 생각하는 \n작은 마음',
             style: TextStyle(
               color: const Color(0xff000000),
               fontWeight: FontWeight.w700,
