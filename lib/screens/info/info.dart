@@ -109,8 +109,8 @@ class _InfoScreenState extends State<InfoScreen> {
                 ),
                 Container(
                   height: 160 * getScaleHeight(context),
-                  width: 322 * getScaleWidth(context),
-                  child: Text("현재\n날씨 정보",
+                  width: 400 * getScaleWidth(context),
+                  child: Text("과거-현재-미래\n기온 예측 및 비교",
                       style: const TextStyle(
                           color: const Color(0xff000000),
                           fontWeight: FontWeight.w700,
@@ -129,6 +129,10 @@ class _InfoScreenState extends State<InfoScreen> {
               height: 500 * getScaleHeight(context),
               decoration: BoxDecoration(
                 color: const Color(0xfff1f1f5),
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 1,
+                ),
               ),
               child: _drawChart(),
             ),

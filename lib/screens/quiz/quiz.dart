@@ -125,6 +125,10 @@ class _QuizScreenState extends State<QuizScreen> {
                           height: 946 * getScaleHeight(context),
                           decoration: BoxDecoration(
                             color: const Color(0xfff1f1f5),
+                            border: Border.all(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
                           ),
                           child: Stack(
                             children: [
