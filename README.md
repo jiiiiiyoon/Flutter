@@ -1,4 +1,4 @@
-# shallwe_app
+# 티끌
 
 A new Flutter project.
 
